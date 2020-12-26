@@ -24,5 +24,10 @@ public class LiftManager {
     System.out.print("Number of Floors : ");
     int numberOfFloors = scanner.nextInt();
 
+    List<Lift> lifts = new ArrayList<>(numberOfLifts);
+    for (int i = 0; i < numberOfLifts; i++) {
+      final String id = "L" + (i + 1);
+      lifts.add(new Lift(id, "CLOSED", 0));
+    }
   }
 }
