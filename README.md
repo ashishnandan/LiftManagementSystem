@@ -3,8 +3,9 @@ Java Program to Manage Lift Operations
 
 
 Assume there are N lifts in a building of M floors.
-Key Params:
-Current Floor: The floor at which the lift is.
+
+####Key Params:
+<b>Current Floor</b>: The floor at which the lift is.
 Starting Floor: The floor from which the request was made.
 Destination Floor: The floor to which the lift must go.
 State: The lift can either be open or closed.
