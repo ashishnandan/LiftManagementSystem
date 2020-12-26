@@ -35,7 +35,8 @@ This signifies that the lift must travel from the 7th floor to the 3rd floor.
 Eg:
 (L1,L2) ---> (0,0)
 
-0 7\n
+0 7
+
 3 0
 
 LIFT 1 will cater the first request in 9 units. (1 to open, 7 commute and 1 to open)
