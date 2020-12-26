@@ -17,20 +17,30 @@ the destination floor provided the current floor of the lift is 0.
 
 #### Input:
 
-N : No of lifts in a given building. (Eg:2) M: No of floors in a building. (Eg: 10)
+N : No of lifts in a given building. (Eg:2) 
+M: No of floors in a building. (Eg: 10)
 04
 This signifies that the lift must travel from the 0th floor to the 4th floor.
 73
 This signifies that the lift must travel from the 7th floor to the 3rd floor.
+
 Eg:
 (L1,L2) ---> (0,0)
-07 30
+
+07 
+30
+
 LIFT 1 will cater the first request in 9 units. (1 to open, 7 commute and 1 to open)
 LIFT 2 will cater the second request in 8 units. ( 3 units to go to the 3rd floor, 1 to open, 3 to return and 1 to open again)
-Now, assume at time unit T=2, there is a request : 46
+
+Now, assume at time unit T=2, 
+there is a request : 4 6
  Lift 1 must be able to cater to this request as it is going in an upward direction.
-Sample Input Output:
+
+#### Sample Input Output:
+
 INPUT:
+
 No of Lifts: 2 No of Floors: 10
 L1=0,L2=0
 07 30
@@ -65,3 +75,4 @@ T=11
 LIFT 1 OPENS
 LIFT 1 -- >7(CLOSE), LIFT 2 ---> 0(CLOSE)
 LIFT 1: 11 SECONDS LIFT 2: 8 SECONDS
+
