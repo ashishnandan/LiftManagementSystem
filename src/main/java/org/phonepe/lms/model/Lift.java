@@ -1,28 +1,33 @@
 package org.phonepe.lms.model;
 
+import static org.phonepe.lms.model.DoorStatus.CLOSED;
+import static org.phonepe.lms.model.DoorStatus.OPEN;
+
 public class Lift {
 
     private String id;
 
-    private String doorStatus = "CLOSED";
+    private DoorStatus doorStatus;
 
     private int currentFloor;
 
-    public Lift(String id, String doorStatus, int currentFloor) {
+    private String status;
+
+    public Lift(String id, DoorStatus doorStatus, int currentFloor) {
         this.id = id;
         this.doorStatus = doorStatus;
         this.currentFloor = currentFloor;
     }
 
     public void openDoor() {
-        this.doorStatus = "OPEN";
+        this.doorStatus = OPEN;
     }
 
     public void closeDoor() {
-        this.doorStatus = "CLOSED";
+        this.doorStatus = CLOSED;
     }
 
-    public String getDoorStatus() {
+    public DoorStatus getDoorStatus() {
         return doorStatus;
     }
 
@@ -40,6 +45,10 @@ public class Lift {
 
     public String getId() {
         return id;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     @Override
