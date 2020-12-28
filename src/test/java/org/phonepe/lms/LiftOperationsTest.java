@@ -32,4 +32,13 @@ public class LiftOperationsTest {
         assertEquals(8, lift.getCurrentFloor());
         assertEquals(10, liftOperations.getJourneyTime());
     }
+
+    @Test
+    public void operateDown() {
+        Lift lift = new Lift("1", "OPEN", 0);
+        liftOperations.operate(lift, 9, 2);
+
+        assertEquals(2, lift.getCurrentFloor());
+        assertEquals(18, liftOperations.getJourneyTime());
+    }
 }

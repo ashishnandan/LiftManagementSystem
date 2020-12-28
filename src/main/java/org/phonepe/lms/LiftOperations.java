@@ -23,6 +23,14 @@ public class LiftOperations {
                 journeyTime++;
                 operateUp(lift, startFloor, destinationFloor);
             }
+        } else {
+            trackLiftJourney(lift, journeyTime);
+            lift.closeDoor();
+            journeyTime++;
+            operateUp(lift, 0, startFloor);
+            lift.closeDoor();
+            journeyTime++;
+            operateDown(lift, startFloor, destinationFloor);
         }
         System.out.println("Lift " + lift.getId() + " : " + journeyTime + "SECONDS");
     }
@@ -31,6 +39,16 @@ public class LiftOperations {
         for (int i = startFloor; i < destinationFloor; i++) {
             trackLiftJourney(lift, journeyTime);
             lift.moveUp();
+            journeyTime++;
+        }
+        lift.openDoor();
+        trackLiftJourney(lift, journeyTime);
+    }
+
+    private void operateDown(Lift lift, int startFloor, int destinationFloor) {
+        for (int i = startFloor; i > destinationFloor; i--) {
+            trackLiftJourney(lift, journeyTime);
+            lift.moveDown();
             journeyTime++;
         }
         lift.openDoor();
