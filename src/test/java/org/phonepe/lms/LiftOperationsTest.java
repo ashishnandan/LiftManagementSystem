@@ -16,9 +16,20 @@ public class LiftOperationsTest {
     }
 
     @Test
-    public void operate() {
-        Lift lift = new Lift("1", "CLOSED", 0);
+    public void operateUp_fromBaseFloor() {
+        Lift lift = new Lift("1", "OPEN", 0);
         liftOperations.operate(lift, 0, 7);
+
         assertEquals(7, lift.getCurrentFloor());
+        assertEquals(8, liftOperations.getJourneyTime());
+    }
+
+    @Test
+    public void operateUp_FromNonBaseFloor() {
+        Lift lift = new Lift("1", "OPEN", 0);
+        liftOperations.operate(lift, 3, 8);
+
+        assertEquals(8, lift.getCurrentFloor());
+        assertEquals(10, liftOperations.getJourneyTime());
     }
 }
