@@ -14,11 +14,36 @@ public class Lift {
         this.currentFloor = currentFloor;
     }
 
-    public void openDoor(){
+    public void openDoor() {
         this.doorStatus = "OPEN";
     }
 
-    public void closeDoor(){
+    public void closeDoor() {
         this.doorStatus = "CLOSED";
+    }
+
+    public String getDoorStatus() {
+        return doorStatus;
+    }
+
+    public int getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public void moveUp() {
+        currentFloor++;
+    }
+
+    public void moveDown() {
+        currentFloor--;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "LIFT " + id + " -> " + this.currentFloor + "(" + this.doorStatus + ")";
     }
 }
