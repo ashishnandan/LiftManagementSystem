@@ -3,6 +3,7 @@ package org.phonepe.lms;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.phonepe.lms.model.Lift;
+import org.phonepe.lms.operations.LiftOperations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.phonepe.lms.model.DoorStatus.OPEN;

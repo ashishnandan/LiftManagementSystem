@@ -1,4 +1,4 @@
-package org.phonepe.lms;
+package org.phonepe.lms.operations;
 
 import org.phonepe.lms.model.Lift;
 

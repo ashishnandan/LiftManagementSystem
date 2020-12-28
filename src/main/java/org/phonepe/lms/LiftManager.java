@@ -2,10 +2,17 @@ package org.phonepe.lms;
 
 import org.phonepe.lms.model.DoorStatus;
 import org.phonepe.lms.model.Lift;
+import org.phonepe.lms.operations.LiftIdentifier;
+import org.phonepe.lms.operations.LiftOperations;
+import org.phonepe.lms.operations.LiftRequests;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class LiftManager {
 
@@ -18,62 +25,43 @@ public class LiftManager {
     this.numberOfFloors = numberOfFloors;
   }
 
-  public void execute(String input) {
+  public void execute() throws InterruptedException {
+    System.out.println("Called");
     LiftOperations liftOperations = new LiftOperations();
-    String[] split = input.split(",");
-
-    // validation here
-
-    for (int i = 0; i < lifts.size(); i++) {
-      if (i >= split.length)
-        break;
-      String[] s = split[i].trim().split(" ");
-      liftOperations.operate(lifts.get(i), Integer.valueOf(s[0]), Integer.valueOf(s[1]));
-    }
-  }
-
-  public Lift identifyLiftToExecute(String input) {
-    // identify if any lift is idle
-    Lift lift = getFirstIdleLift();
-    if (lift != null)
-      return lift;
-    final String[] s = input.split(" ");
-    if (Integer.valueOf(s[1]) > Integer.valueOf(s[1])) {
-      // lift is moving up, identify a up moving lift and which is at lesser floor
-    } else {
-
-    }
-    return lift;
-  }
-
-  private Lift getFirstIdleLift() {
-    Lift lift = null;
-    for (Lift l : lifts) {
-      if (l.getStatus() == "IDLE") {
-        lift = l;
-        break;
+    LiftRequests liftRequests = LiftRequests.getInstance();
+    Map<String, String> requests = liftRequests.getRequests();
+    synchronized (liftRequests) {
+      for (Map.Entry<String, String> entry : requests.entrySet()) {
+        String direction = Integer.parseInt(entry.getValue()) > Integer.parseInt(entry.getKey()) ?
+                "up" :
+                "down";
+        Lift lift = getLift(direction);
+        while (lift == null) {
+          this.wait(1000);
+          lift = getLift(direction);
+        }
+        System.out.println("Lift selected for operation : " + lift.getId());
+        liftOperations.operate(lift, Integer.parseInt(entry.getKey()),
+                Integer.parseInt(entry.getValue()));
       }
     }
-    return lift;
   }
 
-  public void execute() {
-    LiftOperations liftOperations = new LiftOperations();
-    List<String> inputs = new LiftRequests().getRequests();
-    // validation here
-
-    for (int i = 0; i < lifts.size(); i++) {
-      if (i >= inputs.size())
-        break;
-      String[] s = inputs.get(i).trim().split(" ");
-      liftOperations.operate(lifts.get(i), Integer.valueOf(s[0]), Integer.valueOf(s[1]));
-    }
+  private Lift getLift(String direction) {
+    Lift lift = null;
+    final LiftIdentifier liftIdentifier = new LiftIdentifier(lifts);
+    lift = liftIdentifier.getIdleLift();
+    if (lift == null)
+      lift = liftIdentifier.getNearestLiftInSameDirection(direction);
+    return lift;
   }
 
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
+
     System.out.print("No of Lifts : ");
     int numberOfLifts = scanner.nextInt();
+
     System.out.print("Number of Floors : ");
     int numberOfFloors = scanner.nextInt();
 
@@ -83,5 +71,29 @@ public class LiftManager {
       lifts.add(new Lift(id + "", DoorStatus.OPEN, 0));
     }
 
+
+    LiftManager liftManager = new LiftManager(lifts, numberOfFloors);
+
+    ScheduledExecutorService exec = Executors.newScheduledThreadPool(5);
+    exec.scheduleAtFixedRate(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          liftManager.execute();
+        } catch (InterruptedException e) {
+          // error handling
+        }
+      }
+    }, 0, 5, TimeUnit.SECONDS);
+
+    LiftRequests liftRequests = LiftRequests.getInstance(numberOfFloors);
+    while (scanner.hasNext()) {
+      String s = scanner.next();
+      s += scanner.nextLine();
+      liftRequests.addRequests(s);
+    }
+    scanner.close();
+
   }
+
 }
