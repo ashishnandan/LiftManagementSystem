@@ -74,17 +74,21 @@ public class LiftManager {
 
     LiftManager liftManager = new LiftManager(lifts, numberOfFloors);
 
-    ScheduledExecutorService exec = Executors.newScheduledThreadPool(5);
-    exec.scheduleAtFixedRate(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          liftManager.execute();
-        } catch (InterruptedException e) {
-          // error handling
+    try {
+      ScheduledExecutorService exec = Executors.newScheduledThreadPool(5);
+      exec.scheduleAtFixedRate(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            liftManager.execute();
+          } catch (InterruptedException e) {
+            // error handling
+          }
         }
-      }
-    }, 0, 5, TimeUnit.SECONDS);
+      }, 0, 5, TimeUnit.SECONDS);
+    } catch (Exception e) {
+      System.out.println("ERR -> " + e.getMessage());
+    }
 
     LiftRequests liftRequests = LiftRequests.getInstance(numberOfFloors);
     while (scanner.hasNext()) {
